@@ -13,8 +13,15 @@ data = ""
 
 def find_data(query):
     global data
-    for j in search(query, tld='co.in', num=10, stop=10, pause=3):
+    limit = 0
+    for j in search(query, tld='co.in', num=100, stop=100, pause=3):
         res = requests.get(j)
+        
+        if(response.status_code != 404):
+            limit += 1
+        else:
+            continue
+            
         contents = res.text
 
         soup = BeautifulSoup(contents, "html.parser")
@@ -24,8 +31,11 @@ def find_data(query):
 
         for each in paragraph:
             # print(each.getText())
-            data += each.getText()
+            data += each.getText()     
         print(data)
+        
+        if(limit == 5):
+            break
 
 
 def utility_func():
